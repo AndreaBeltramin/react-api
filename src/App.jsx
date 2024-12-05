@@ -19,7 +19,6 @@ function App() {
 			.then((res) => res.json())
 			.then((data) => {
 				console.log(data);
-
 				setList(data);
 			});
 	}, []);
@@ -49,11 +48,16 @@ function App() {
 	};
 
 	const removePost = (i) => {
-		const updatedList = list.filter((el, index) => {
-			return index !== i;
-		});
-		setList(updatedList);
+		fetch(`http://localhost:3000/posts/ ${i}`, {
+			method: "DELETE",
+		})
+			.then((res) => res.json())
+			.then((data) => {
+				console.log(data);
+				setList(data);
+			});
 	};
+
 	return (
 		<>
 			<div className="container mt-5">
@@ -74,14 +78,14 @@ function App() {
 					/>
 
 					{/* input immagine */}
-					<label htmlFor="image" className="form-label">
+					<label htmlFor="img" className="form-label">
 						Immagine
 					</label>
 					<input
-						id="image"
+						id="img"
 						className="form-control mb-3"
 						type="text"
-						name="image"
+						name="img"
 						value={formFields.img}
 						onChange={handleInputChange}
 						placeholder="Inserisci un' immagine"
@@ -118,22 +122,28 @@ function App() {
 					</select>
 					<button className="btn btn-primary">Aggiungi Post alla lista</button>
 				</form>
-				<section>
+				<section className="mb-5">
 					<h2 className="mt-3">Post list</h2>
 					<div className="row row-cols-2 g-3">
 						{list.length ? (
 							list.map((el, index) => (
 								<div className="col" key={index}>
-									<div className="card">
+									<div className="card h-100">
+										<img
+											src={el.img}
+											className="card-img-top img-fluid"
+											alt=""
+										/>
 										<div className="card-body">
 											<i
 												className="fa-solid fa-trash ms-2"
 												onClick={() => removePost(index)}
 											></i>
-											<h3>{el.title}</h3>
-											<img src={el.img} alt="" />
-											<h3>{el.content}</h3>
-											<h3>{el.category}</h3>
+											<h5 className="card-title">{el.title.toUpperCase()}</h5>
+											<p className="card-text">
+												<h3>Descrizione: {el.content}</h3>
+												<h3>{el.category}</h3>
+											</p>
 										</div>
 									</div>
 								</div>
