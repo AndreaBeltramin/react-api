@@ -47,9 +47,10 @@ function App() {
 		setFormFields(defaultFormData);
 	};
 
-	const removePost = (i) => {
-		fetch(`http://localhost:3000/posts/ ${i}`, {
+	const removePost = (id) => {
+		fetch(`http://localhost:3000/posts/ ${id}`, {
 			method: "DELETE",
+			body: JSON.stringify({ id: "id" }),
 		})
 			.then((res) => res.json())
 			.then((data) => {
@@ -135,15 +136,25 @@ function App() {
 											alt=""
 										/>
 										<div className="card-body">
-											<i
-												className="fa-solid fa-trash ms-2"
-												onClick={() => removePost(index)}
-											></i>
-											<h5 className="card-title">{el.title.toUpperCase()}</h5>
-											<p className="card-text">
+											<h2 className="card-title text-danger">
+												{el.title.toUpperCase()}
+											</h2>
+											<div className="card-text">
 												<h3>Descrizione: {el.content}</h3>
 												<h3>{el.category}</h3>
-											</p>
+												{el.tags.map((tag, index) => (
+													<span
+														key={index}
+														className="badge text-bg-success me-2 mb-2"
+													>
+														<h6>{tag}</h6>
+													</span>
+												))}
+											</div>
+											<i
+												className="fa-solid fa-trash ms-2"
+												onClick={() => removePost(el.id)}
+											></i>
 										</div>
 									</div>
 								</div>
