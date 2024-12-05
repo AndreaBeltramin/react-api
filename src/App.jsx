@@ -48,9 +48,9 @@ function App() {
 	};
 
 	const removePost = (id) => {
-		fetch(`http://localhost:3000/posts/ ${id}`, {
+		fetch("http://localhost:3000/posts/" + id, {
 			method: "DELETE",
-			body: JSON.stringify({ id: "id" }),
+			body: JSON.stringify({ id: id }),
 		})
 			.then((res) => res.json())
 			.then((data) => {
@@ -116,10 +116,10 @@ function App() {
 						name="category"
 						onChange={handleInputChange}
 					>
-						<option>Seleziona una categoria</option>
-						<option value="categoria 1">categoria 1</option>
-						<option value="categoria 2">categoria 2</option>
-						<option value="categoria 3">categoria 3</option>
+						<option value="">Scegli una categoria</option>
+						<option value="panificati">panificati</option>
+						<option value="primo piatto">primo piatto</option>
+						<option value="dessert">dessert</option>
 					</select>
 					<button className="btn btn-primary">Aggiungi Post alla lista</button>
 				</form>
@@ -141,7 +141,7 @@ function App() {
 											</h2>
 											<div className="card-text">
 												<h3>Descrizione: {el.content}</h3>
-												<h3>{el.category}</h3>
+												<h3>Categoria: {el.category}</h3>
 												{el.tags.map((tag, index) => (
 													<span
 														key={index}
