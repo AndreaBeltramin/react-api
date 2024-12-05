@@ -33,19 +33,6 @@ function App() {
 			});
 	}, []);
 
-	const handleInputChange = (e) => {
-		setFormFields({ ...formFields, [e.target.name]: e.target.value });
-	};
-
-	const handleFormTagsChange = (e) => {
-		let newTags = e.target.checked
-			? [...formFields.tags, e.target.value]
-			: formFields.tags.filter((tag) => tag != e.target.value);
-
-		const newFormFields = { ...formFields, tags: newTags };
-		setFormFields(newFormFields);
-	};
-
 	const handleFormSubmit = (e) => {
 		e.preventDefault();
 
@@ -59,11 +46,28 @@ function App() {
 			return;
 		}
 
-		const newPostList = [...postList, formFields];
-		setPostList(newPostList);
+		const newPostList = { ...formFields };
+		setPostList([...postList, newPostList]);
 
 		// resetto il form
 		setFormFields(defaultFormData);
+	};
+
+	const handleInputChange = (e) => {
+		setFormFields({
+			...formFields,
+			[e.target.name]:
+				e.target.type === "checkbox" ? e.target.checked : e.target.value,
+		});
+	};
+
+	const handleFormTagsChange = (e) => {
+		let newTags = e.target.checked
+			? [...formFields.tags, e.target.value]
+			: formFields.tags.filter((tag) => tag != e.target.value);
+
+		const newFormFields = { ...formFields, tags: newTags };
+		setFormFields(newFormFields);
 	};
 
 	const removePost = (id) => {
@@ -169,6 +173,25 @@ function App() {
 								<option value="primo piatto">primo piatto</option>
 								<option value="dessert">dessert</option>
 							</select>
+						</div>
+
+						{/* INPUT PUBBLICATO */}
+						<div className="col-3">
+							<label className="form-label me-2">Pubblicato</label>
+							<div>
+								<label>
+									<input
+										type="checkbox"
+										name="published"
+										onChange={handleInputChange}
+										checked={formFields.published}
+									/>
+								</label>
+							</div>
+						</div>
+
+						{/* BOTTONE CREAZIONE POST */}
+						<div className="col-12">
 							<button className="btn btn-primary">
 								Aggiungi Post alla lista
 							</button>
