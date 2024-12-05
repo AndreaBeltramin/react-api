@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const defaultFormData = {
 	id: "",
@@ -13,6 +13,17 @@ function App() {
 	const [list, setList] = useState([]);
 	const [formFields, setFormFields] = useState(defaultFormData);
 
+	//fetching dati al caricamento della pagina
+	useEffect(() => {
+		fetch("http://localhost:3000/posts")
+			.then((res) => res.json())
+			.then((data) => {
+				console.log(data);
+
+				setList(data);
+			});
+	}, []);
+
 	const handleInputChange = (e) => {
 		setFormFields({ ...formFields, [e.target.name]: e.target.value });
 	};
@@ -22,7 +33,7 @@ function App() {
 
 		if (
 			!formFields.title ||
-			!formFields.image ||
+			!formFields.img ||
 			!formFields.content ||
 			!formFields.category
 		) {
@@ -71,7 +82,7 @@ function App() {
 						className="form-control mb-3"
 						type="text"
 						name="image"
-						value={formFields.image}
+						value={formFields.img}
 						onChange={handleInputChange}
 						placeholder="Inserisci un' immagine"
 					/>
@@ -120,7 +131,10 @@ function App() {
 												onClick={() => removePost(index)}
 											></i>
 											<h3>{el.title}</h3>
-											<h3>{el.image}</h3>
+											<img
+												src="http://localhost:3000/images/ciambellone.jpeg"
+												alt=""
+											/>
 											<h3>{el.content}</h3>
 											<h3>{el.category}</h3>
 										</div>
