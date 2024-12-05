@@ -120,7 +120,7 @@ function App() {
 				</form>
 				<section>
 					<h2 className="mt-3">Post list</h2>
-					<div className="row row-cols-3 g-3">
+					<div className="row row-cols-2 g-3">
 						{list.length ? (
 							list.map((el, index) => (
 								<div className="col" key={index}>
@@ -131,10 +131,7 @@ function App() {
 												onClick={() => removePost(index)}
 											></i>
 											<h3>{el.title}</h3>
-											<img
-												src="http://localhost:3000/images/ciambellone.jpeg"
-												alt=""
-											/>
+											<img src={el.img} alt="" />
 											<h3>{el.content}</h3>
 											<h3>{el.category}</h3>
 										</div>
