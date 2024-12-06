@@ -73,12 +73,17 @@ function App() {
 	const removePost = (id) => {
 		fetch("http://localhost:3000/posts/" + id, {
 			method: "DELETE",
-			body: JSON.stringify({ id: id }),
 		})
-			.then((res) => res.json())
+			.then((res) => res)
 			.then((data) => {
 				console.log(data);
-				setPostList(data);
+
+				fetch("http://localhost:3000/posts")
+					.then((res) => res.json())
+					.then((data) => {
+						console.log(data);
+						setPostList(data);
+					});
 			});
 	};
 
