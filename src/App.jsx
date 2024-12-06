@@ -67,7 +67,26 @@ function App() {
 			: formFields.tags.filter((tag) => tag != e.target.value);
 
 		const newFormFields = { ...formFields, tags: newTags };
-		setFormFields(newFormFields);
+
+		fetchCreatePost(newFormFields);
+		// setFormFields(newFormFields);
+	};
+
+	const fetchCreatePost = () => {
+		fetch("http://localhost:3000/posts", {
+			method: "POST",
+			body: JSON.stringify(tags),
+		})
+			.then((res) => res.json())
+			.then((data) => {
+				console.log(data);
+				fetch("http://localhost:3000/posts")
+					.then((res) => res.json())
+					.then((data) => {
+						console.log(data);
+						setPostList(data);
+					});
+			});
 	};
 
 	const removePost = (id) => {
@@ -233,10 +252,61 @@ function App() {
 													</span>
 												))}
 											</div>
-											<i
-												className="fa-solid fa-trash ms-2"
-												onClick={() => removePost(post.id)}
-											></i>
+
+											<button
+												type="button"
+												className="btn btn-primary"
+												data-bs-toggle="modal"
+												data-bs-target="#exampleModal"
+											>
+												<i className="fa-solid fa-trash "></i>
+											</button>
+
+											<div
+												className="modal fade"
+												id="exampleModal"
+												tabIndex="-1"
+											>
+												<div className="modal-dialog">
+													<div className="modal-content">
+														<div className="modal-header">
+															<h1
+																className="modal-title fs-5"
+																id="exampleModalLabel"
+															>
+																ATTENZIONE: ELIMINAZIONE POST!
+															</h1>
+															<button
+																type="button"
+																className="btn-close"
+																data-bs-dismiss="modal"
+																aria-label="Close"
+															></button>
+														</div>
+														<div className="modal-body">
+															Sei sicuro di voler eliminare il post?
+														</div>
+														<div className="modal-footer">
+															<button
+																type="button"
+																className="btn btn-secondary"
+																data-bs-dismiss="modal"
+															>
+																Close
+															</button>
+															{/* 'BOTTONE' PER ELIMINARE IL POST DALLA LISTA */}
+															<button
+																type="button"
+																className="btn btn-danger"
+																data-bs-dismiss="modal"
+																onClick={() => removePost(post.id)}
+															>
+																ELIMINA DEFINITIVAMENTE
+															</button>
+														</div>
+													</div>
+												</div>
+											</div>
 										</div>
 									</div>
 								</div>
