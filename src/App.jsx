@@ -48,6 +48,7 @@ function App() {
 
 		const newPostList = { ...formFields };
 		setPostList([...postList, newPostList]);
+		fetchCreatePost(formFields);
 
 		// resetto il form
 		setFormFields(defaultFormData);
@@ -68,14 +69,17 @@ function App() {
 
 		const newFormFields = { ...formFields, tags: newTags };
 
-		fetchCreatePost(newFormFields);
-		// setFormFields(newFormFields);
+		setFormFields(newFormFields);
 	};
 
-	const fetchCreatePost = () => {
+	//FUNZIONE PER CREARE UN POST
+	const fetchCreatePost = (data) => {
 		fetch("http://localhost:3000/posts", {
 			method: "POST",
-			body: JSON.stringify(tags),
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify(data),
 		})
 			.then((res) => res.json())
 			.then((data) => {
@@ -89,6 +93,7 @@ function App() {
 			});
 	};
 
+	//FUNZIONE PER RIMUOVERE UN POST
 	const removePost = (id) => {
 		fetch("http://localhost:3000/posts/" + id, {
 			method: "DELETE",
@@ -216,7 +221,10 @@ function App() {
 
 						{/* BOTTONE CREAZIONE POST */}
 						<div className="col-12">
-							<button className="btn btn-primary">
+							<button
+								className="btn btn-primary"
+								onClick={handleFormTagsChange}
+							>
 								Aggiungi Post alla lista
 							</button>
 						</div>
